@@ -33,21 +33,23 @@ var Loader = (function(){
 			return JSON.parse(str);
 		},
 		composeAndSend : function(org) {
-			var enterprise = {eskId : org.ORG_ID, name : org.FULL_ORG_NAME};
-			var options = {
-				uri: 'http://localhost:8080/protofront/service/enterprises/?languageId=3',
-				form : enterprise
-			};
-			console.log(enterprise);
-			request.post(options, function (error, response, body) {
-				if (error) {console.log(error);} 
+			console.log('*****************  ' + org.ORG_ID + '  **********************');
+			request({
+						uri: 'http://localhost:9200/test/enterprise/' + org.ORG_ID,
+						json : org,
+						method : 'POST'
+				},	function (error, response, body) {
+					// console.log(body);
+					// console.log(response);
+					if (error) {console.log(error);
+				} 
 			});
 			
 		}
 	};
 })();
 
-var arr = Loader.parsefile('org-3.json');
+var arr = Loader.parsefile('org-utf8.json');
 arr.forEach(function(org) {
 	Loader.composeAndSend(org);
 });
